@@ -1,30 +1,61 @@
-import { Formik, Form, Field } from "formik";
- 
-  const initialValues = {
-      username: "",
-      email: "",
-    };
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import { nanoid } from "nanoid";
+import * as Yup from "yup";
 
-function ContactForm() {
-   
-    const FieldId = useId();
-   
-     const handleSubmit = (values, actions) => {
-       console.log(values);
-       actions.resetForm();
-     };
+const initialValues = {
+  username: "",
+  number: "",
+};
+
+const FeedbackSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(3, "Too Short!")
+    .max(50, "Too Long!")
+    .required("Required"),
+  number: Yup.string()
+    .matches(/^(\+380|0)?[\d\s\-()]{6,14}$/, "Number must be 6-7 digits long")
+    .required("Required"),
+});
+
+function ContactForm({ onAdd }) {
+  const handleSubmit = (values, { resetForm }) => {
+    onAdd({
+      id: nanoid(),
+      name: values.username,
+      number: values.number,
+    });
+    resetForm();
+  };
+
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
-      <Form>
-              <label htmlFor={`${nameFieldId}`}>Username</label>
-        <Field type="text" name="username" id={nameFieldId} />
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={FeedbackSchema}
+    >
+      {() => (
+        <Form>
+          <label htmlFor="username">Name</label>
+          <Field type="text" name="username" id="username" required />
+          <ErrorMessage
+            name="username"
+            component="div"
+            style={{ color: "red" }}
+          />
 
-        <label htmlFor={emailFieldId}>Email</label>
-        <Field type="email" name="email" id={emailFieldId} />
+          <label htmlFor="number">Number</label>
+          <Field type="text" name="number" id="number" required />
+          <ErrorMessage
+            name="number"
+            component="div"
+            style={{ color: "red" }}
+          />
 
-        <button type="submit">Submit</button>
-      </Form>
+          <button type="submit">Add contact</button>
+        </Form>
+      )}
     </Formik>
   );
-};
+}
+
 export default ContactForm;

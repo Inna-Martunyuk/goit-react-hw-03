@@ -1,0 +1,12 @@
+.container {
+    
+}
+.person {
+display: flex;
+flex-direction: row;
+justify-content: flex-start;
+
+}
+.number {
+
+}

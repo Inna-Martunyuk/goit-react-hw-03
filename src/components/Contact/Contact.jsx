@@ -1,19 +1,20 @@
 import { IoPerson, IoCallSharp } from "react-icons/io5";
-function Contact({ contact, onClick }) {
+import css from "./Contact.module.css"
+function Contact({ contact, onDelete }) {
   const { id, name, number } = contact;
   return (
     <>
-      <div>
-        <div>
+      <div className={css.container}>
+        <div className={css.name}>
           <IoPerson />
           <p>{name}</p>
         </div>
-        <div>
+        <div className={css.number}>
           <IoCallSharp />
           <p>{number}</p>
         </div>
       </div>
-      <button onClick={() => onClick(id)}>Delete</button>
+      <button onClick={() => onDelete(id)}>Delete</button>
     </>
   );
 }
