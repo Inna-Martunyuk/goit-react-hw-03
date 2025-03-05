@@ -37,6 +37,7 @@ function App() {
     window.localStorage.setItem("saved-contacts", JSON.stringify(contacts));
   }, [contacts]);
 
+
   return (
     <>
       <h1>Phonebook</h1>

@@ -1,6 +1,8 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { nanoid } from "nanoid";
 import * as Yup from "yup";
+import css from "./ContactForm.module.css";
+import { useId } from "react";
 
 const initialValues = {
   username: "",
@@ -18,13 +20,16 @@ const FeedbackSchema = Yup.object().shape({
 });
 
 function ContactForm({ onAdd }) {
-  const handleSubmit = (values, { resetForm }) => {
+  const nameId = useId();
+  const numberId = useId();
+
+  const handleSubmit = (values, actions) => {
     onAdd({
       id: nanoid(),
       name: values.username,
       number: values.number,
     });
-    resetForm();
+    actions.resetForm();
   };
 
   return (
@@ -33,27 +38,33 @@ function ContactForm({ onAdd }) {
       onSubmit={handleSubmit}
       validationSchema={FeedbackSchema}
     >
-      {() => (
-        <Form>
-          <label htmlFor="username">Name</label>
-          <Field type="text" name="username" id="username" required />
-          <ErrorMessage
-            name="username"
-            component="div"
-            style={{ color: "red" }}
-          />
-
-          <label htmlFor="number">Number</label>
-          <Field type="text" name="number" id="number" required />
-          <ErrorMessage
-            name="number"
-            component="div"
-            style={{ color: "red" }}
-          />
-
-          <button type="submit">Add contact</button>
-        </Form>
-      )}
+      <Form className={css.form}>
+        <label className={css.text} htmlFor={nameId}>
+          Name
+        </label>
+        <Field
+          className={css.input}
+          type="text"
+          name="username"
+          id={nameId}
+          required
+        />
+        <ErrorMessage name="username" component="div" className={css.error} />
+        <label className={css.text} htmlFor={numberId}>
+          Number
+        </label>
+        <Field
+          className={css.input}
+          type="text"
+          name="number"
+          id={numberId}
+          required
+        />
+        <ErrorMessage name="number" component="div" className={css.error} />
+        <button className={css.button} type="submit">
+          Add contact
+        </button>
+      </Form>
     </Formik>
   );
 }

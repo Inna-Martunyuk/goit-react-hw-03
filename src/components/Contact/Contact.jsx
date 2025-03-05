@@ -3,19 +3,21 @@ import css from "./Contact.module.css"
 function Contact({ contact, onDelete }) {
   const { id, name, number } = contact;
   return (
-    <>
+    <div className={css.contactDiv}>
       <div className={css.container}>
-        <div className={css.name}>
+        <div className={css.containerName}>
           <IoPerson />
-          <p>{name}</p>
+          <p className={css.name}>{name}</p>
         </div>
-        <div className={css.number}>
+        <div className={css.containerNumber}>
           <IoCallSharp />
-          <p>{number}</p>
+          <p className={css.number}>{number}</p>
         </div>
       </div>
-      <button onClick={() => onDelete(id)}>Delete</button>
-    </>
+      <button className={css.btn} type="buttom" onClick={() => onDelete(id)}>
+        Delete
+      </button>
+    </div>
   );
 }
 export default Contact;
